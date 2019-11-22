@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+       default-autowire="byName">
+
+
+    <!--发送消息配置-->
+    <bean id="producer" class="org.apache.rocketmq.client.vvproducer.VVDefaultProducer" init-method="start" destroy-method="shutdown">
+    <constructor-arg name="groupId" value="P_HA_CMS_AUDITOBJ"></constructor-arg>
+    </bean>
+
+
+    <!--消费消息配置-->
+    <bean id="consumernew" class="org.apache.rocketmq.client.vvconsumer.VVDefaultPushConsumer" init-method="start" destroy-method="shutdown">
+        <constructor-arg name="groupId" value="C_HAC_CMS_AUDITOBJ"></constructor-arg>
+        <property name="messageListener" ref="receiveListener"></property>
+    </bean>
+
+    <bean id="receiveListener" class="com.hh.xmlmode.ReviceRocketMqListener"></bean>
+
+
+</beans>
